@@ -110,7 +110,7 @@
       )
 #define REPEAT_SEMI_INDIRECT() REPEAT_SEMI
 
-// Need an other eval because interference is REPEAT
+// Need an other eval because interference with EVAL(REPEAT( ... ))
 #define EVAL_IE(...)  EVAL_IE1(EVAL_IE1(EVAL_IE1(__VA_ARGS__)))
 #define EVAL_IE1(...) EVAL_IE2(EVAL_IE2(EVAL_IE2(__VA_ARGS__)))
 #define EVAL_IE2(...) EVAL_IE3(EVAL_IE3(EVAL_IE3(__VA_ARGS__)))
