@@ -1,4 +1,6 @@
 
+// Based on https://stackoverflow.com/a/10526117
+
 #define CAT(a, ...) a ## __VA_ARGS__
 
 #define INC(x) CAT(INC_, x)
