@@ -1,6 +1,4 @@
 
-#define MAX_REC(x) max_rec_##x
-
 #define CAT(a, ...) a ## __VA_ARGS__
 
 #define INC(x) CAT(INC_, x)
