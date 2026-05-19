@@ -111,11 +111,12 @@
 #define REPEAT_SEMI_INDIRECT() REPEAT_SEMI
 
 int main() {
-  WHEN(1)("toto");  // "toto";
+  WHEN(1)("foo");  // "foo";
+  WHEN(0)("bar");  // ;
 
-  PLUS(5, 18);  // 3;
+  PLUS(5, 18);  // 3;    (23 % 20 = 3)
 
-  EVAL(REPEAT_SEMI(19, PLUS_AUX, 5)); // i + 5, pour i allant de 0 à 18
+  EVAL(REPEAT_SEMI(19, PLUS_AUX, 5)); // for i in [0, 18], (i + 5) % 20
   //5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19; 0; 1; 2; 3;;
 
   return PLUS(3, 9);  // return 12;
