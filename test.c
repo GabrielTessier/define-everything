@@ -110,9 +110,35 @@
       )
 #define REPEAT_SEMI_INDIRECT() REPEAT_SEMI
 
+// Need an other eval because interference is REPEAT
+#define EVAL_IE(...)  EVAL_IE1(EVAL_IE1(EVAL_IE1(__VA_ARGS__)))
+#define EVAL_IE1(...) EVAL_IE2(EVAL_IE2(EVAL_IE2(__VA_ARGS__)))
+#define EVAL_IE2(...) EVAL_IE3(EVAL_IE3(EVAL_IE3(__VA_ARGS__)))
+#define EVAL_IE3(...) EVAL_IE4(EVAL_IE4(EVAL_IE4(__VA_ARGS__)))
+#define EVAL_IE4(...) EVAL_IE5(EVAL_IE5(EVAL_IE5(__VA_ARGS__)))
+#define EVAL_IE5(...) __VA_ARGS__
+
+#define IS_EVEN_AUX(x) IF(BOOL(x))(OBSTRUCT(IS_ODD_AUX_INDIRECT)()(DEC(x)), 1)
+#define IS_ODD_AUX(x)  IF(BOOL(x))(OBSTRUCT(IS_EVEN_AUX_INDIRECT)()(DEC(x)), 0)
+#define IS_EVEN_AUX_INDIRECT() IS_EVEN_AUX
+#define IS_ODD_AUX_INDIRECT()  IS_ODD_AUX
+#define IS_EVEN(x) EVAL_IE(IS_EVEN_AUX(x))
+#define IS_ODD(x)  EVAL_IE(IS_ODD_AUX(x))
+
 int main() {
   WHEN(1)("foo");  // "foo";
   WHEN(0)("bar");  // ;
+
+#define EVEN_OR_ODD(i, e) IF(BOOL(IS_EVEN(i)))(i is even, i is odd)   ___
+  EVAL(REPEAT(5, EVEN_OR_ODD, ~));
+  // 0 is even ___ 1 is odd ___ 2 is even ___ 3 is odd ___ 4 is even ___;
+
+  IF(BOOL(IS_EVEN(0)))("0 is even", "0 is odd");  // "0 is even";
+  IF(BOOL(IS_EVEN(1)))("1 is even", "1 is odd");  // "1 is odd";
+  IF(BOOL(IS_EVEN(2)))("2 is even", "2 is odd");  // "2 is even";
+  IF(BOOL(IS_EVEN(3)))("3 is even", "3 is odd");  // "3 is odd";
+  IF(BOOL(IS_EVEN(4)))("4 is even", "4 is odd");  // "4 is even";
+  IF(BOOL(IS_EVEN(5)))("5 is even", "5 is odd");  // "5 is odd";
 
   PLUS(5, 18);  // 3;    (23 % 20 = 3)
 
